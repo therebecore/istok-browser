@@ -1,0 +1,15 @@
+﻿# Сборка
+build/
+.gradle/
+local.properties
+*.apk
+*.aab
+
+# Ключи подписи никогда не в репозитории
+*.jks
+*.keystore
+keystore.properties
+
+# Среда
+.idea/
+.DS_Store

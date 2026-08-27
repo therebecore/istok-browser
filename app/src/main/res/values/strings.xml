@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Значение по умолчанию - английский, русский лежит в values-ru (шаг 8д Этапа 9).
+    Язык выбирает система: на русском телевизоре берётся values-ru, на любом другом
+    этот файл. Комментарии здесь остаются русскими: их читает разработчик, а не
+    человек с пультом.
+-->
+<resources>
+    <string name="app_name" translatable="false">ISTOK Browser</string>
+    <!-- Домашняя страница -->
+    <string name="home_last">last site</string>
+    <string name="error_no_webview">The system WebView component is unavailable.\n\nIt may be updating right now - try starting the browser again in a couple of minutes.</string>
+
+    <!-- Предупреждение о версии движка. %1$s - версия System WebView -->
+    <string name="webview_outdated">The TV engine is out of date (version %1$s), protection from malicious sites will not work. Update the Android System WebView component in Google Play.</string>
+
+    <!-- Предупреждение об отладочной прошивке (B-03): сокет отладчика открывает сам движок -->
+    <string name="build_debuggable">This TV runs a debug build: other apps can read open pages and what you type. Do not enter passwords or card details.</string>
+
+    <!-- Панель навигации. Тексты читает TalkBack: на экране только иконки -->
+    <string name="nav_back">Back</string>
+    <string name="nav_forward">Forward</string>
+    <string name="nav_reload">Reload</string>
+    <string name="nav_home">Home page</string>
+    <string name="nav_home_return">Back to the page</string>
+    <string name="nav_menu">Menu</string>
+    <string name="nav_keyboard">Keyboard</string>
+
+    <!-- Экранная клавиатура. На самих клавишах рисунки, а тексты читает TalkBack:
+         буквами подписана только раскладка - там текст и есть смысл клавиши -->
+    <string name="key_shift">Capital letter</string>
+    <string name="key_space">Space</string>
+    <string name="key_backspace">Delete character</string>
+    <string name="key_enter">Enter</string>
+    <string name="key_close">Hide keyboard</string>
+    <string name="key_clear">Clear field</string>
+    <string name="key_left">Caret left</string>
+    <string name="key_right">Caret right</string>
+    <string name="key_paste">Paste from clipboard</string>
+    <string name="key_select_all">Select all</string>
+    <string name="key_copy">Copy</string>
+    <string name="key_cut">Cut</string>
+    <string name="key_dot_com" translatable="false">.com</string>
+    <string name="key_dot_ru" translatable="false">.ru</string>
+    <string name="key_mode">Control: pointer or remote keys</string>
+    <string name="key_latin" translatable="false">ABC</string>
+    <!-- Подпись клавиши, которая переключает раскладку на кириллицу: это буквы самой
+         раскладки, а не её название, поэтому в английской версии текст тот же -->
+    <string name="key_cyrillic">АБВ</string>
+    <string name="key_digits" translatable="false">123</string>
+
+    <!-- Меню: выбор поисковика. Названия - имена сервисов, переводу не подлежат -->
+    <string name="menu_search_title">Search</string>
+    <string name="menu_bookmarks">Bookmarks</string>
+    <string name="nav_bookmark_add">Add bookmark</string>
+    <string name="nav_bookmark_remove">Remove bookmark</string>
+    <string name="menu_history">History</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_about">About</string>
+    <string name="menu_donate">Donate</string>
+    <string name="menu_exit">Exit</string>
+    <string name="act_history_clear">Clear history</string>
+    <string name="act_pin">Pin</string>
+    <string name="act_unpin">Unpin</string>
+    <string name="act_bookmark">Add bookmark</string>
+    <string name="act_forget">Remove from history</string>
+
+    <!--
+        Экран настроек (Этап 7). Подпись под названием объясняет, что именно меняется:
+        на телевизоре читают с трёх метров и в справку не ходят, а половина этих
+        переключателей про то, что уходит наружу.
+    -->
+    <string name="page_settings_title">Settings</string>
+    <string name="set_on">On</string>
+    <string name="set_off">Off</string>
+    <string name="set_private">Private mode</string>
+    <string name="set_private_hint">Do not remember which sites were opened</string>
+    <string name="set_safe">Dangerous site check</string>
+    <string name="set_safe_hint">Google checks the addresses you open against a list of dangerous ones</string>
+    <string name="set_autofill">Form autofill</string>
+    <string name="set_autofill_hint">The TV sees page fields and fills in what was saved</string>
+    <string name="set_js">JavaScript</string>
+    <string name="set_js_hint">Many sites do not work without it</string>
+    <string name="set_ua">Site version</string>
+    <string name="set_ua_hint">Which version of a site to ask the server for</string>
+    <string name="set_ua_on">Desktop</string>
+    <string name="set_ua_off">TV</string>
+    <string name="set_start">On startup open</string>
+    <string name="set_start_hint">Where the browser begins</string>
+    <string name="set_start_on">Last site</string>
+    <string name="set_start_off">Home page</string>
+    <!-- Обновление по воздуху (ADR-051). Выключатель обязателен: это единственный
+         случай, когда браузер выходит в сеть сам, без просьбы человека. -->
+    <string name="set_updates">Check for browser updates</string>
+    <string name="set_updates_hint">Once a day it looks whether a new version is out</string>
+    <string name="set_lists">Scroll lists inside a page</string>
+    <string name="set_lists_hint">The pointer reaches the edge of a list and the list keeps going</string>
+
+    <!-- Язык интерфейса (ADR-058). Названия языков непереводимы: язык в списке
+         называют на нём самом, иначе тот, кому список и нужен, своего не найдёт. -->
+    <string name="set_lang">Language</string>
+    <string name="set_lang_hint">The browser restarts to apply it</string>
+    <string name="lang_system">Same as the TV</string>
+    <string name="lang_ru" translatable="false">Русский</string>
+    <string name="lang_en" translatable="false">English</string>
+
+    <!--
+        Очистка данных (требование E-3). Одной кнопкой, без выбора что чистить -
+        решение пользователя 2026-08-10. Подпись перечисляет то, что уйдёт, а
+        предупреждение о выходе из аккаунтов стоит на самом экране подтверждения:
+        это главное следствие, и увидеть его нужно до нажатия, а не после.
+    -->
+    <string name="set_wipe">Clear browser data</string>
+    <string name="set_wipe_hint">History, cookies, cache, site and form data</string>
+    <string name="wipe_title">Clear browser data?</string>
+    <string name="wipe_message">History, cookies, cache, site data and saved form entries will be deleted. You will be signed out of every site and will have to sign in again. Bookmarks, favourites and settings stay where they are.</string>
+    <string name="wipe_action">Clear everything</string>
+    <string name="wipe_note">The browser closes after clearing. Otherwise part of the site data stays in memory until restart.</string>
+
+    <!-- Подтверждение чистки истории -->
+    <string name="clear_title">Clear history?</string>
+    <string name="clear_message">The list of visited sites will be deleted with no way back. Bookmarks and favourites stay where they are.</string>
+    <string name="clear_action">Clear</string>
+    <string name="clear_cancel">Cancel</string>
+    <string name="act_favorite">Add to favourites</string>
+    <string name="act_unfavorite">Remove from favourites</string>
+    <string name="act_remove">Delete bookmark</string>
+    <string name="act_rename">Rename</string>
+    <string name="act_ok">OK</string>
+    <string name="act_move_left">Move left</string>
+    <string name="act_move_right">Move right</string>
+    <string name="home_edit">Edit favourites</string>
+    <string name="home_edit_done">Done</string>
+    <string name="page_bookmarks_title">Bookmarks</string>
+    <string name="page_bookmarks_pick">Pick a bookmark for favourites</string>
+    <string name="page_history_title">History</string>
+    <string name="page_history_pinned">Pinned</string>
+    <string name="page_bookmarks_empty">No bookmarks yet. Open a site and press Add bookmark on the toolbar.</string>
+    <string name="page_history_empty">History is empty.</string>
+    <string name="page_pinned_empty">Nothing is pinned.</string>
+    <string name="search_duckduckgo" translatable="false">DuckDuckGo</string>
+    <string name="search_google" translatable="false">Google</string>
+    <string name="search_yandex">Yandex</string>
+
+    <!-- Адресная строка -->
+    <string name="address_local">Browser page</string>
+    <string name="address_hint">Address or search</string>
+    <string name="security_secure">Connection is secure</string>
+    <string name="security_insecure">Connection is not secure</string>
+    <!-- Полноэкранный режим: хост подставляется из адреса движка, не из страницы (C-4) -->
+    <!-- Подсказка режима прокрутки (ADR-046): режим модальный, выход надо назвать. -->
+    <!-- Полоса обновления (ADR-051). Версия подставляется кодом. -->
+    <string name="set_check_now">Check now</string>
+    <string name="set_version">Version %1$s (%2$d)</string>
+
+    <!-- Экран поддержки (ADR-060). Адреса и QR - в Wallets.kt, они не переводятся;
+         подписи кошельков переводятся, в них есть слова. -->
+    <string name="wallet_btc" translatable="false">Bitcoin</string>
+    <string name="wallet_eth" translatable="false">Ethereum</string>
+    <string name="wallet_ton">GRAM and USDT, TON network</string>
+    <string name="wallet_tron">USDT, Tron network (TRC-20)</string>
+    <string name="donate_text">A light browser for the TV - free, with no ads and no tracking. It will stay that way: development is kept going by the people who find it useful. Scan a code with your phone or type the address by hand.</string>
+
+    <!--
+        Экран «О браузере» (ADR-056). Здесь же живут версия и обновление: настройки -
+        это то, что человек меняет под себя, а версия и её проверка относятся к самому
+        браузеру. Имена в credits - не перевод, а имена людей.
+    -->
+    <string name="about_product" translatable="false">ISTOK</string>
+    <string name="about_sub" translatable="false">BROWSER</string>
+    <string name="about_tagline">A light browser for the TV - free, with no ads and no tracking. It will stay that way.</string>
+    <string name="about_author">Created by</string>
+    <string name="about_author_name" translatable="false">therebecore</string>
+    <string name="about_tester">Tested by</string>
+    <string name="about_tester_name" translatable="false">rupolk1973</string>
+    <string name="about_license">Licence</string>
+    <string name="about_license_name" translatable="false">Apache 2.0</string>
+    <string name="update_checking">Checking…</string>
+    <string name="update_none">You have the latest version</string>
+    <string name="update_available">Version %1$s is available</string>
+    <string name="update_check_failed">Could not check</string>
+    <string name="update_ready">Version %1$s is out</string>
+    <string name="update_now">Update</string>
+    <string name="update_later">Later</string>
+    <string name="update_downloading">Downloading the update…</string>
+    <string name="update_verifying">Checking the signature…</string>
+    <string name="update_installing">Opening the installer…</string>
+    <string name="update_wrong_signature">The file is not signed by us. Installation cancelled</string>
+    <string name="update_broken">The downloaded file is damaged. Try again</string>
+    <string name="update_foreign">The file is a different app. Installation cancelled</string>
+    <string name="update_old">The file is not a newer version. Installation cancelled</string>
+    <string name="limit_favorites">The home screen holds six tiles. Remove one first</string>
+    <string name="limit_bookmarks">Bookmarks are full: 200 is the limit</string>
+    <string name="limit_pinned">Pinned entries are full: 200 is the limit</string>
+    <string name="update_failed">Could not update. Try again later</string>
+    <string name="scroll_hint">Scrolling what is under the pointer. OK - pick, BACK - exit</string>
+    <string name="fullscreen_host">%1$s is showing full screen. BACK - exit</string>
+    <string name="fullscreen_host_unknown">The page is showing full screen. BACK - exit</string>
+    <!-- ADR-063: the page sent the viewer to an address with a broken certificate.
+         The page itself is alive and stays; this is the whole explanation. -->
+    <string name="quiet_ssl">%1$s did not open: invalid certificate</string>
+    <!-- B-180: shown right under the certificate error. The viewer goes looking
+         for a switch at this exact moment, and the only security-looking one
+         ("warn about dangerous sites") has nothing to do with certificates. -->
+    <string name="ssl_not_a_setting">Certificate checking cannot be turned off and does not depend on the settings: the "dangerous sites" switch is about a list of addresses, not about certificates.</string>
+
+    <!-- Незащищённое соединение -->
+    <string name="http_title">Connection is not secure</string>
+    <string name="http_message">This site sends data in the clear. Everything you type or read on it is visible to anyone with access to the network.</string>
+    <string name="http_action">Open anyway</string>
+
+    <!-- Ошибки сертификата -->
+    <string name="err_ssl_title">The site certificate is not valid</string>
+    <string name="ssl_expired">The certificate has expired. A site whose owner simply forgot about it looks exactly like an attempt to impersonate it.</string>
+    <string name="ssl_idmismatch">The certificate was issued for a different name. The connection may be intercepted.</string>
+    <string name="ssl_untrusted">The certificate was issued by an unknown certificate authority.</string>
+    <string name="ssl_notyetvalid">The certificate is not valid yet. Check the date and time on the TV.</string>
+    <string name="ssl_other">The certificate check did not pass.</string>
+
+    <!-- Сетевая ошибка -->
+    <string name="err_net_title">Could not open the page</string>
+    <string name="err_net_message">The site is not responding, or there is no network connection.</string>
+
+    <!-- Подтверждение http уже недействительно -->
+    <string name="err_stale_title">Confirmation not accepted</string>
+    <string name="err_stale_message">The confirmation came from something other than the button the browser showed. It looks like the page tried to allow the visit for you. Open the address again.</string>
+
+    <!-- Адрес с userinfo: маскировка чужого сервера знакомым именем -->
+    <string name="err_spoof_title">Suspicious address</string>
+    <string name="err_spoof_message">The address has another site name in front of the @ sign - that is how a jump to a foreign server is disguised. The browser does not open such links. The link really leads here:</string>
+
+    <!-- Заблокированная схема -->
+    <string name="err_lan_title">Home network is not allowed</string>
+    <string name="err_lan_message">This address belongs to a device in your home network, and access to it is turned off. Turn on the local network permission for the browser in the TV settings, under Apps.</string>
+    <string name="err_blocked_title">Link blocked</string>
+    <string name="err_blocked_message">The link leads to another app, not to a web page. The browser does not follow such links.</string>
+
+    <!-- Safe Browsing -->
+    <string name="err_threat_title">Dangerous site</string>
+    <string name="err_threat_message">Google Safe Browsing marked this page as malicious. It can steal passwords or install harmful software.</string>
+
+    <!-- Падение процесса отрисовки -->
+    <string name="err_renderer_title">Page closed</string>
+    <string name="err_renderer_crashed">Page rendering ended with an error. The browser keeps working.</string>
+    <string name="err_renderer_killed">The TV ran out of memory and the system closed the page. The browser keeps working.</string>
+</resources>

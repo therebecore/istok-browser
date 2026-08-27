@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Требование D-1: только эти разрешения. Любое новое требует ADR. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Третье разрешение, разрешено ADR-016. Уровень normal, выдаётся при установке.
+         Курсор порождает события ввода сам, поэтому платформенная защита от подмены
+         нажатия (FLAG_WINDOW_IS_OBSCURED) к ним неприменима: чужой оверлей мог бы
+         показать одно, а клик ушёл бы на то, что под ним, - и согласие пользователя
+         на экранах решений (требование H-1) ничего бы не значило. Работает с API 31,
+         на Android 8..11 остаётся принятым риском (требование H-5). -->
+    <uses-permission android:name="android.permission.HIDE_OVERLAY_WINDOWS" />
+
+    <!-- Четвёртое разрешение, разрешено ADR-051. Без него обновление по воздуху
+         невозможно вовсе: система не даст открыть установщик для скачанного APK.
+         Уровень normal - выдаётся при установке, отдельного согласия не спрашивает,
+         но первую установку из нашего источника человек всё равно подтверждает
+         на экране системы, и это правильно.
+
+         Цена честно записана в SECURITY.md: приложение получает возможность
+         предложить установку пакета. Ограничено это тем, что ставится только файл,
+         подписанный нашим ключом (проверка отпечатка в Updates), и только тот,
+         чей номер версии выше установленного. -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+    <!-- Пятое разрешение, разрешено ADR-061. С targetSdk 37 обращение к устройствам
+         домашней сети (роутер, NAS, камера, локальный медиасервер) закрыто отдельным
+         разрешением: без него соединение не отклоняется, а молча висит до таймаута.
+
+         Оно опасное - и потому спрашивается не при запуске, а в тот момент, когда
+         человек сам набрал локальный адрес. Не дал - работает только интернет, браузер
+         показывает экран с объяснением. На Android до 17 разрешения не существует
+         и система его игнорирует. -->
+    <uses-permission android:name="android.permission.ACCESS_LOCAL_NETWORK" />
+
+    <!-- Наше собственное разрешение, не платформенное (ADR-062). Оно ничего не открывает
+         наружу - наоборот, закрывает: приёмник ответа установщика регистрируется кодом,
+         а до Android 13 у registerReceiver нет флага экспорта, и приёмник без указанного
+         разрешения доступен любому приложению на устройстве. Уровень signature означает,
+         что послать нам такое широковещание может только приложение с нашим ключом
+         подписи, то есть мы сами.
+
+         Требование D-1 («только разрешения с ADR») этим не нарушено: счёт платформенных
+         разрешений по-прежнему пять, а это шестая строка другого рода - объявление своего
+         разрешения и запрос его же себе. -->
+    <permission
+        android:name="io.github.therebecore.istok.INSTALL_STATUS_RECEIVE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="io.github.therebecore.istok.INSTALL_STATUS_RECEIVE" />
+
+    <!-- Приложение для телевизора: интерфейс leanback обязателен, тачскрин не нужен.
+         Без touchscreen required="false" приложение не проходит в ТВ-каталоги. -->
+    <uses-feature
+        android:name="android.software.leanback"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+
+    <!-- Требование D-3: allowBackup отключает облачный бэкап и adb backup,
+         dataExtractionRules дополнительно закрывает перенос данных между устройствами
+         на Android 12+, где allowBackup уже не действует. Без него история и cookies
+         уехали бы на новую приставку при штатной миграции.
+
+         usesCleartextTraffic здесь намеренно отсутствует (ADR-011): решение по http
+         принимает приложение по каждому домену, а не платформа один раз навсегда.
+         Правила доверия - в @xml/network_security_config. -->
+    <!-- enableOnBackInvokedCallback: без него на Android 13, 14 и 15 платформа
+         игнорирует зарегистрированный OnBackInvokedCallback, и обработка BACK там
+         шла бы старым путём, который мы не проверяли. С Android 16 новый путь
+         единственный (ADR-015). Жест возврата на телевизоре не используется -
+         на пульте есть физическая кнопка. -->
+    <!-- roundIcon здесь намеренно отсутствует (шаг 7 Этапа 8): круглую иконку
+         запрашивают лаунчеры телефонов, а ТВ-лаунчер показывает banner. Пять файлов
+         ic_launcher_round лежали в APK мёртвым весом и стоили 13 252 Б из 112 243 Б.
+         Исходники иконки остались в design/. -->
+    <application
+        android:allowBackup="false"
+        android:banner="@drawable/tv_banner"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
+        android:fullBackupContent="@xml/backup_rules"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:supportsRtl="false"
+        android:theme="@style/Theme.Istok">
+
+        <!-- Требование B-3. System WebView сам по себе выгружает в Google диагностику
+             по каждому приложению, которое его создаёт, если у пользователя включён
+             системный пункт "Использование и диагностика". Выключается это только здесь.
+             Без этой строки заявление "мы не собираем ничего" было бы неправдой. -->
+        <meta-data
+            android:name="android.webkit.WebView.MetricsOptOut"
+            android:value="true" />
+
+        <!-- Требование D-2: exported задан явно, экспортирована только эта Activity.
+             Требование D-6: пустой taskAffinity не даёт чужому приложению подсадить
+             свою активность в задачу браузера и подменить собой экран ввода пароля.
+             Платформа закрыла это только в Android 11, а minSdk у нас 26.
+             configChanges: смену конфигурации обрабатываем сами (ADR-008),
+             пересоздавать Activity с живым WebView незачем. -->
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="density|keyboard|keyboardHidden|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
+            android:exported="true"
+            android:taskAffinity="">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

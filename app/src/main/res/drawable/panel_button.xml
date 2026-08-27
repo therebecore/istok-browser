@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Фон кнопок панели. Нажатие обязано быть видно: курсором пользователь целится
+     менее точно, чем мышью, и без отклика непонятно, попал он по кнопке или мимо.
+     Ripple не используется - это лишняя анимация на каждый кадр там, где хватает
+     смены цвета. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:drawable="@color/panel_button_pressed" />
+    <item android:drawable="@android:color/transparent" />
+</selector>

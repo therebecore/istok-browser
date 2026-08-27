@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Корень намеренно FrameLayout, а не ConstraintLayout: поверх содержимого лежит
+    оверлей курсора, на Этапе 5 добавится клавиатура. Для наложения слоёв
+    FrameLayout - самый дешёвый вариант, и он есть в самой платформе.
+
+    Панель и WebView не вложены в LinearLayout, хотя лежат друг под другом:
+    отступ сверху у WebView даёт тот же результат одним уровнем иерархии меньше,
+    а главное - `webView.top` остаётся координатой в системе корня, и пересчёт
+    координат курсора в событие для WebView не требует обхода цепочки родителей.
+
+    Фон здесь не задаётся: его уже красит тема Theme.Istok. Дублирование
+    давало бы лишний слой отрисовки на каждый кадр (overdraw).
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <io.github.therebecore.istok.BrowserWebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/panel_height" />
+
+    <!--
+        Панель навигации видна всегда и страницу не перекрывает (ADR-017): скрытие
+        конфликтовало бы с прокруткой краем экрана из Этапа 3, где движение курсора
+        у границы уводит страницу.
+
+        Единственное исключение - полноэкранное видео (ADR-033): там панель уходит
+        вместе со всей страницей, потому что кадр обязан занимать экран целиком.
+        Отсюда и id: скрывать её умеет только этот случай.
+    -->
+    <LinearLayout
+        android:id="@+id/navBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/panel_height"
+        android:layout_gravity="top"
+        android:background="@color/panel_background"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <!--
+            Кнопки крупнее иконки: 56dp - это площадь попадания курсором с пульта,
+            а не размер рисунка. contentDescription обязателен - без него сборка
+            падает на проверке линта, и это правильно: TalkBack на телевизорах есть.
+        -->
+        <ImageButton
+            android:id="@+id/back"
+            android:layout_width="@dimen/panel_button"
+            android:layout_height="@dimen/panel_button"
+            android:background="@drawable/panel_button"
+            android:contentDescription="@string/nav_back"
+            android:scaleType="center"
+            android:src="@drawable/ic_back" />
+
+        <ImageButton
+            android:id="@+id/forward"
+            android:layout_width="@dimen/panel_button"
+            android:layout_height="@dimen/panel_button"
+            android:background="@drawable/panel_button"
+            android:contentDescription="@string/nav_forward"
+            android:scaleType="center"
+            android:src="@drawable/ic_forward" />
+
+        <ImageButton
+            android:id="@+id/reload"
+            android:layout_width="@dimen/panel_button"
+            android:layout_height="@dimen/panel_button"
+            android:background="@drawable/panel_button"
+            android:contentDescription="@string/nav_reload"
+            android:scaleType="center"
+            android:src="@drawable/ic_reload" />
+
+        <!--
+            Домой и обратно одной кнопкой. Картинка и назначение меняются кодом:
+            на сайте это «домой», на домашней странице - «вернуться туда, где был».
+            Отдельной кнопки возврата нет намеренно: на панели телевизора каждая
+            кнопка стоит места, а два действия здесь взаимно исключают друг друга.
+        -->
+        <ImageButton
+            android:id="@+id/home"
+            android:layout_width="@dimen/panel_button"
+            android:layout_height="@dimen/panel_button"
+            android:background="@drawable/panel_button"
+            android:contentDescription="@string/nav_home"
+            android:scaleType="center"
+            android:src="@drawable/ic_home" />
+
+        <!--
+            Индикатор защищённости стоит слева от адреса и живёт вне WebView:
+            подделать его страница не может (требование C-4). Картинка меняется кодом,
+            contentDescription здесь - значение по умолчанию для линта, дальше
+            его выставляет MainActivity вместе с картинкой.
+        -->
+        <ImageView
+            android:id="@+id/security"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="12dp"
+            android:contentDescription="@string/security_secure"
+            android:src="@drawable/ic_lock" />
+
+        <!--
+            Цвет по умолчанию тусклый - это путь и параметры. Имя хоста подсвечивается
+            span-ом из кода: обрезается строка с конца, и домен обязан остаться видимым
+            в любом адресе, каким бы длинным его ни сделал сайт (требование C-2).
+        -->
+        <!--
+            Наш EditText, а не платформенный: он не отдаёт системе соединение ввода,
+            поэтому клавиатуре телевизора нечего обслуживать (B-43, см. NoImeEditText).
+
+            imeOptions при этом не мёртвые, хотя системный IME мы не поднимаем (B-52,
+            разобрано на шаге 8 Этапа 8). Пока B-43 открыт, известно обратное: на живой
+            прошивке Яндекс ТВ клавиатура телевизора всё же встаёт поверх нашей, и тогда
+            flagNoPersonalizedLearning - единственное, что запрещает ей запоминать
+            набранный адрес. Убирать флаги можно только вместе с закрытием B-43.
+        -->
+        <io.github.therebecore.istok.NoImeEditText
+            android:id="@+id/address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:ellipsize="end"
+            android:focusable="false"
+            android:hint="@string/address_hint"
+            android:imeOptions="actionGo|flagNoExtractUi|flagNoPersonalizedLearning"
+            android:importantForAutofill="no"
+            android:gravity="center_vertical"
+            android:inputType="textUri|textNoSuggestions"
+            android:minHeight="@dimen/panel_button"
+            android:saveEnabled="false"
+            android:singleLine="true"
+            android:textColor="@color/panel_hint"
+            android:textColorHint="@color/panel_hint"
+            android:textDirection="ltr"
+            android:textSize="20sp" />
+
+        <!--
+            «В закладки» стоит сразу за адресом, а не в меню: закладка ставится тому,
+            что сейчас на экране, и рука идёт от адресной строки. Значок заполнен,
+            когда страница уже в закладках, - повторное нажатие её убирает.
+        -->
+        <ImageButton
+            android:id="@+id/bookmark"
+            android:layout_width="@dimen/panel_button"
+            android:layout_height="@dimen/panel_button"
+            android:background="@drawable/panel_button"
+            android:contentDescription="@string/nav_bookmark_add"
+            android:scaleType="center"
+            android:src="@drawable/ic_bookmark_add" />
+
+        <!--
+            Клавиатуру поднимает и клик в поле страницы, но hit-тест видит не всякое
+            поле (ADR-022): `contenteditable` и редакторы на div для него - обычный
+            блок. Кнопка нужна как путь, который работает всегда.
+        -->
+        <ImageButton
+            android:id="@+id/keys"
+            android:layout_width="@dimen/panel_button"
+            android:layout_height="@dimen/panel_button"
+            android:background="@drawable/panel_button"
+            android:contentDescription="@string/nav_keyboard"
+            android:scaleType="center"
+            android:src="@drawable/ic_keyboard" />
+
+        <ImageButton
+            android:id="@+id/menu"
+            android:layout_width="@dimen/panel_button"
+            android:layout_height="@dimen/panel_button"
+            android:background="@drawable/panel_button"
+            android:contentDescription="@string/nav_menu"
+            android:scaleType="center"
+            android:src="@drawable/ic_menu" />
+
+    </LinearLayout>
+
+    <!--
+        Полоса загрузки идёт по нижней кромке панели: на телевизоре это единственный
+        признак того, что нажатие вообще что-то начало, - страница может думать
+        несколько секунд. Прячется, когда загрузка закончилась.
+    -->
+    <ProgressBar
+        android:id="@+id/progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_gravity="top"
+        android:layout_marginTop="@dimen/panel_progress_top"
+        android:max="100"
+        android:visibility="invisible" />
+
+    <!--
+        Меню - обычные View внутри того же корня, а не PopupMenu и не Dialog: всплывающие
+        конструкции платформы живут в отдельном окне, а курсор доставляет клик
+        диспетчеризацией по нашему корню (требование H-3), и до чужого окна не дотянется.
+        С пульта такое меню оказалось бы мёртвым.
+
+        Подложка занимает весь экран и перехватывает нажатия: клик мимо меню закрывает
+        его, а не проваливается в страницу или в кнопки панели. Затемнение на ней
+        не украшение: на телевизоре пользователь смотрит издалека и должен видеть,
+        что страница сейчас не отвечает на нажатия.
+    -->
+    <FrameLayout
+        android:id="@+id/menuScrim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/menu_scrim"
+        android:clickable="true"
+        android:focusable="false"
+        android:visibility="gone">
+
+        <!--
+            Ширина задана явно, а не по содержимому: в строке поиска название и значение
+            разведены по краям через `layout_weight`, а вес внутри контейнера с шириной
+            по содержимому растягивает меню на весь экран.
+        -->
+        <LinearLayout
+            android:layout_width="@dimen/menu_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="@dimen/panel_height"
+            android:layout_marginEnd="16dp"
+            android:background="@color/panel_background"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+
+            <!--
+                Разделы меню по утверждённому макету (`design/home-mockup.html`, раздел 02).
+                Пункт «Настройки» встал на оставленное для него место (Этап 7, шаг 4):
+                три перехода на наши экраны, разделитель, выбор поисковика прямо в строке.
+            -->
+            <TextView
+                android:id="@+id/menuBookmarks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/panel_button"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/panel_button"
+                android:minWidth="@dimen/menu_width"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:text="@string/menu_bookmarks"
+                android:textColor="@color/panel_text"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/menuHistory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/panel_button"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/panel_button"
+                android:minWidth="@dimen/menu_width"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:text="@string/menu_history"
+                android:textColor="@color/panel_text"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/menuAbout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/panel_button"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/panel_button"
+                android:minWidth="@dimen/menu_width"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:text="@string/menu_about"
+                android:textColor="@color/panel_text"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/menuSettings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/panel_button"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/panel_button"
+                android:minWidth="@dimen/menu_width"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:text="@string/menu_settings"
+                android:textColor="@color/panel_text"
+                android:textSize="20sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/panel_hint"
+                android:alpha="0.3" />
+
+            <!--
+                Поисковик виден прямо в строке и переключается по кругу нажатием на неё.
+                Так решено при утверждении макета: вложенный экран на пульте стоит
+                двух лишних нажатий, а выбор всего из трёх значений того не стоит.
+            -->
+            <LinearLayout
+                android:id="@+id/menuSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/panel_button"
+                android:baselineAligned="false"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/panel_button"
+                android:minWidth="@dimen/menu_width"
+                android:orientation="horizontal"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/menu_search_title"
+                    android:textColor="@color/panel_text"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/menuSearchValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:textColor="@color/panel_hint"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:alpha="0.3"
+                android:background="@color/panel_hint" />
+
+            <!--
+                Выход из браузера (B-87). Здесь, а не на панели: там каждая кнопка лежит
+                на пути курсора, а закрытие - действие редкое. Отделён чертой, чтобы
+                не попасть в него мимо «Настроек». Подтверждения нет намеренно: закрытие
+                ничего не теряет, адрес сохраняется, а лишний экран на пульте дороже
+                случайного выхода.
+            -->
+            <!--
+                Порядок задан пользователем 2026-08-24: «надо всё-таки выход в самом низу,
+                а над ним поддержать». Первым заходом «Поддержать» стоял под «Выйти», и это
+                было хуже вдвойне: промах вверх закрывал браузер, а самый нижний пункт
+                меню - место для действия, которое ищут последним.
+            -->
+            <TextView
+                android:id="@+id/menuDonate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/panel_button"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/panel_button"
+                android:minWidth="@dimen/menu_width"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:text="@string/menu_donate"
+                android:textColor="@color/panel_text"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/menuExit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/panel_button"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/panel_button"
+                android:minWidth="@dimen/menu_width"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:text="@string/menu_exit"
+                android:textColor="@color/panel_text"
+                android:textSize="20sp" />
+
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <!--
+        Поле переименования закладки или плитки. Своим View, а не полем на странице:
+        связь локальной страницы с приложением - только переход по своей схеме (ADR-009),
+        и набранное в HTML-поле к нам не попадёт никак.
+
+        Стоит сверху, а не по центру: снизу поднимается клавиатура, и поле по центру
+        оказалось бы под ней. Подписей вокруг поля нет намеренно - в нём уже лежит
+        текущее название; подтверждают правку кнопка «ОК» и клавиша «ввод».
+
+        Затемняющая подложка и колонка с полем - **один** элемент: отдельная колонка
+        внутри подложки была лишним уровнем разметки (lint, UselessParent), а ширину
+        держат сами дети.
+    -->
+    <LinearLayout
+        android:id="@+id/renameScrim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/menu_scrim"
+        android:clickable="true"
+        android:focusable="false"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="140dp"
+        android:visibility="gone">
+
+        <!-- imeOptions здесь по той же причине, что и у поля адреса выше: пока B-43
+             открыт, системная клавиатура на живой прошивке появляется, и запрет
+             на запоминание введённого должен быть выставлен. -->
+        <io.github.therebecore.istok.NoImeEditText
+            android:id="@+id/rename"
+            android:layout_width="600dp"
+            android:layout_height="wrap_content"
+            android:background="@color/panel_background"
+            android:focusable="false"
+            android:hint="@string/act_rename"
+            android:imeOptions="actionDone|flagNoExtractUi|flagNoPersonalizedLearning"
+            android:importantForAutofill="no"
+            android:inputType="text|textNoSuggestions"
+            android:maxLength="200"
+            android:padding="16dp"
+            android:singleLine="true"
+            android:textColor="@color/panel_text"
+            android:textColorHint="@color/panel_hint"
+            android:textSize="24sp" />
+
+        <!--
+            Кнопки под полем, а не только клавиша «ввод» на клавиатуре: клавиатуру
+            можно убрать, и тогда подтвердить правку было бы нечем. Каждая - свой
+            блок с заливкой и рамкой: на общей плашке две надписи читались как одна
+            полоса, и было непонятно, куда целиться.
+        -->
+        <LinearLayout
+            android:layout_width="600dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/renameOk"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/dialog_button"
+                android:gravity="center"
+                android:minHeight="@dimen/panel_button"
+                android:text="@string/act_ok"
+                android:textColor="@color/panel_text"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/renameCancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:background="@drawable/dialog_button"
+                android:gravity="center"
+                android:minHeight="@dimen/panel_button"
+                android:text="@string/clear_cancel"
+                android:textColor="@color/panel_text"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!--
+        Экранная клавиатура (ADR-020..022). Своими View внутри того же корня и по той же
+        причине, что и меню: до отдельного окна курсор не дотянется. Прижата к низу -
+        поле страницы чаще всего выше, и перекрывать его сверху было бы хуже.
+    -->
+    <io.github.therebecore.istok.KeyboardView
+        android:id="@+id/keyboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/panel_background"
+        android:paddingStart="@dimen/key_edge"
+        android:paddingEnd="@dimen/key_edge"
+        android:paddingTop="@dimen/key_edge"
+        android:paddingBottom="@dimen/key_edge"
+        android:visibility="gone" />
+
+    <!--
+        Плашка полноэкранного режима (требование C-4, ADR-035). Панель с адресом там
+        уходит, а решение о входе принимает страница - значит единственный момент,
+        когда можно назвать хост, это сам вход. Текст ставится кодом из адреса движка,
+        не из страницы. Лежит выше плеера и ниже курсора: плеер добавляется в корень
+        первым индексом, а курсор обязан оставаться поверх всего.
+    -->
+    <TextView
+        android:id="@+id/fullscreenHost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="48dp"
+        android:background="@color/panel_background"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:textColor="@color/panel_text"
+        android:textSize="24sp"
+        android:visibility="gone" />
+
+    <!--
+        Подсказка режима прокрутки (ADR-046). Режим модальный: стрелки перестают двигать
+        курсор, и без подписи это читается как зависший браузер - пользователь застрял
+        на первой же проверке 2026-08-18 («выйти с тестовой страницы не могу»). Поэтому
+        плашка висит всё время режима, а не гаснет по таймеру, как плашка полноэкранного:
+        она объясняет не событие, а состояние, в котором человек находится прямо сейчас.
+    -->
+    <TextView
+        android:id="@+id/scrollHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="32dp"
+        android:background="@color/panel_background"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:text="@string/scroll_hint"
+        android:textColor="@color/panel_text"
+        android:textSize="22sp"
+        android:visibility="gone" />
+
+    <!--
+        Полоса обновления (ADR-051). Внизу и своими View, а не системным диалогом:
+        диалог платформы с пульта недоступен - до него не достаёт наш курсор (`B-19`).
+        Кнопок две, потому что решение принимает человек: браузер сам ничего не ставит.
+        Появляется редко - не чаще раза в сутки и только когда версия действительно новее.
+    -->
+    <LinearLayout
+        android:id="@+id/updateBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="32dp"
+        android:background="@color/panel_background"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/updateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:textColor="@color/panel_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/updateNow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/panel_button"
+            android:gravity="center"
+            android:minHeight="@dimen/panel_button"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:text="@string/update_now"
+            android:textColor="@color/panel_text"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/updateLater"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/panel_button"
+            android:gravity="center"
+            android:minHeight="@dimen/panel_button"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:text="@string/update_later"
+            android:textColor="@color/panel_text"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <!--
+        Курсор лежит последним, то есть поверх и панели, и страницы. Размер задаёт
+        сам View, положение - CursorController сдвигом; layout_gravity здесь не нужен,
+        начальные координаты всё равно выставляются кодом по размеру экрана.
+    -->
+    <io.github.therebecore.istok.CursorOverlayView
+        android:id="@+id/cursor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</FrameLayout>

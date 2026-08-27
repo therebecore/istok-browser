@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="#FFE8EAED">
+    <!-- Обычная стрелка указателя: остриё вверху слева, ножка вправо вниз.
+         Прошлая форма рисовалась одним контуром с изломом и на экране читалась
+         как клякса - пользователь заметил это первым же взглядом. -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M6,2L20,14.4H13.9L17,20.6L14.2,22L11,15.5L6,20.5Z" />
+</vector>

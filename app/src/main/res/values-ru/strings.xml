@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Домашняя страница -->
+    <string name="home_last">последний сайт</string>
+    <string name="error_no_webview">Системный компонент WebView недоступен.\n\nВозможно, он сейчас обновляется - попробуйте запустить браузер через пару минут.</string>
+
+    <!-- Предупреждение о версии движка. %1$s - версия System WebView -->
+    <string name="webview_outdated">Движок телевизора устарел (версия %1$s), защита от вредоносных сайтов работать не будет. Обновите компонент «Android System WebView» через Google Play.</string>
+
+    <!-- Предупреждение об отладочной прошивке (B-03): сокет отладчика открывает сам движок -->
+    <string name="build_debuggable">Прошивка телевизора отладочная: другие приложения могут читать открытые страницы и вводимые данные. Не вводите пароли и данные карт.</string>
+
+    <!-- Панель навигации. Тексты читает TalkBack: на экране только иконки -->
+    <string name="nav_back">Назад</string>
+    <string name="nav_forward">Вперёд</string>
+    <string name="nav_reload">Обновить</string>
+    <string name="nav_home">Домашняя страница</string>
+    <string name="nav_home_return">Вернуться на страницу</string>
+    <string name="nav_menu">Меню</string>
+    <string name="nav_keyboard">Клавиатура</string>
+
+    <!-- Экранная клавиатура. На самих клавишах рисунки, а тексты читает TalkBack:
+         буквами подписана только раскладка - там текст и есть смысл клавиши -->
+    <string name="key_shift">Заглавная буква</string>
+    <string name="key_space">Пробел</string>
+    <string name="key_backspace">Стереть символ</string>
+    <string name="key_enter">Ввод</string>
+    <string name="key_close">Убрать клавиатуру</string>
+    <string name="key_clear">Очистить поле</string>
+    <string name="key_left">Каретку влево</string>
+    <string name="key_right">Каретку вправо</string>
+    <string name="key_paste">Вставить из буфера обмена</string>
+    <string name="key_select_all">Выделить всё</string>
+    <string name="key_copy">Копировать</string>
+    <string name="key_cut">Вырезать</string>
+    <string name="key_mode">Управление: курсором или клавишами пульта</string>
+    <string name="key_cyrillic">АБВ</string>
+
+    <!-- Меню: выбор поисковика. Названия - имена сервисов, переводу не подлежат -->
+    <string name="menu_search_title">Поиск</string>
+    <string name="menu_bookmarks">Закладки</string>
+    <string name="nav_bookmark_add">В закладки</string>
+    <string name="nav_bookmark_remove">Убрать из закладок</string>
+    <string name="menu_history">История</string>
+    <string name="menu_settings">Настройки</string>
+    <string name="menu_about">О браузере</string>
+    <string name="menu_donate">Поддержать</string>
+    <string name="menu_exit">Выйти</string>
+    <string name="act_history_clear">Очистить историю</string>
+    <string name="act_pin">Закрепить</string>
+    <string name="act_unpin">Открепить</string>
+    <string name="act_bookmark">В закладки</string>
+    <string name="act_forget">Удалить из истории</string>
+
+    <!--
+        Экран настроек (Этап 7). Подпись под названием объясняет, что именно меняется:
+        на телевизоре читают с трёх метров и в справку не ходят, а половина этих
+        переключателей про то, что уходит наружу.
+    -->
+    <string name="page_settings_title">Настройки</string>
+    <string name="set_on">Включено</string>
+    <string name="set_off">Выключено</string>
+    <string name="set_private">Приватный режим</string>
+    <string name="set_private_hint">Не запоминать, какие сайты открывались</string>
+    <string name="set_safe">Проверка опасных сайтов</string>
+    <string name="set_safe_hint">Google сверяет открываемые адреса со списком опасных</string>
+    <string name="set_autofill">Автозаполнение форм</string>
+    <string name="set_autofill_hint">Телевизор видит поля страниц и подставляет сохранённое</string>
+    <string name="set_js">JavaScript</string>
+    <string name="set_js_hint">Без него многие сайты не работают</string>
+    <string name="set_ua">Версия сайтов</string>
+    <string name="set_ua_hint">Какую версию сайта просить у сервера</string>
+    <string name="set_ua_on">Для компьютера</string>
+    <string name="set_ua_off">Для телевизора</string>
+    <string name="set_start">При запуске открывать</string>
+    <string name="set_start_hint">С чего начинается браузер</string>
+    <string name="set_start_on">Последний сайт</string>
+    <string name="set_start_off">Домашнюю страницу</string>
+    <!-- Обновление по воздуху (ADR-051). Выключатель обязателен: это единственный
+         случай, когда браузер выходит в сеть сам, без просьбы человека. -->
+    <string name="set_updates">Проверять обновления браузера</string>
+    <string name="set_updates_hint">Раз в сутки смотрит, вышла ли новая версия</string>
+    <string name="set_lists">Листать списки внутри страницы</string>
+    <string name="set_lists_hint">Курсор упёрся в край списка - список едет дальше сам</string>
+
+    <!-- Язык интерфейса (ADR-058) -->
+    <string name="set_lang">Язык</string>
+    <string name="set_lang_hint">Браузер перезапустится, чтобы его применить</string>
+    <string name="lang_system">Как на телевизоре</string>
+
+    <!--
+        Очистка данных (требование E-3). Одной кнопкой, без выбора что чистить -
+        решение пользователя 2026-08-10. Подпись перечисляет то, что уйдёт, а
+        предупреждение о выходе из аккаунтов стоит на самом экране подтверждения:
+        это главное следствие, и увидеть его нужно до нажатия, а не после.
+    -->
+    <string name="set_wipe">Очистить данные браузера</string>
+    <string name="set_wipe_hint">История, куки, кэш, данные сайтов и форм</string>
+    <string name="wipe_title">Очистить данные браузера?</string>
+    <string name="wipe_message">Будут удалены история, куки, кэш, данные сайтов и сохранённое в формах. Вход на сайтах сбросится: везде придётся авторизоваться заново. Закладки, избранное и настройки останутся на месте.</string>
+    <string name="wipe_action">Очистить всё</string>
+    <string name="wipe_note">После очистки браузер закроется. Иначе часть данных сайтов остаётся в памяти до перезапуска.</string>
+
+    <!-- Подтверждение чистки истории -->
+    <string name="clear_title">Очистить историю?</string>
+    <string name="clear_message">Список посещённых сайтов будет удалён без возможности вернуть. Закладки и избранное останутся на месте.</string>
+    <string name="clear_action">Очистить</string>
+    <string name="clear_cancel">Отмена</string>
+    <string name="act_favorite">В избранное</string>
+    <string name="act_unfavorite">Убрать из избранного</string>
+    <string name="act_remove">Удалить закладку</string>
+    <string name="act_rename">Переименовать</string>
+    <string name="act_ok">ОК</string>
+    <string name="act_move_left">Левее</string>
+    <string name="act_move_right">Правее</string>
+    <string name="home_edit">Изменить избранное</string>
+    <string name="home_edit_done">Готово</string>
+    <string name="page_bookmarks_title">Закладки</string>
+    <string name="page_bookmarks_pick">Выберите закладку для избранного</string>
+    <string name="page_history_title">История</string>
+    <string name="page_history_pinned">Закреплённые</string>
+    <string name="page_bookmarks_empty">Закладок пока нет. Открой сайт и нажми «в закладки» на панели.</string>
+    <string name="page_history_empty">История пуста.</string>
+    <string name="page_pinned_empty">Закреплённых записей нет.</string>
+    <string name="search_yandex">Яндекс</string>
+
+    <!-- Адресная строка -->
+    <string name="address_local">Страница браузера</string>
+    <string name="address_hint">Адрес или поиск</string>
+    <string name="security_secure">Соединение защищено</string>
+    <string name="security_insecure">Соединение не защищено</string>
+    <!-- Полноэкранный режим: хост подставляется из адреса движка, не из страницы (C-4) -->
+    <!-- Подсказка режима прокрутки (ADR-046): режим модальный, выход надо назвать. -->
+    <!-- Полоса обновления (ADR-051). Версия подставляется кодом. -->
+    <string name="set_check_now">Проверить сейчас</string>
+    <string name="set_version">Версия %1$s (%2$d)</string>
+
+    <!-- Экран поддержки (ADR-060) -->
+    <string name="wallet_ton">GRAM и USDT, сеть TON</string>
+    <string name="wallet_tron">USDT, сеть Tron (TRC-20)</string>
+    <string name="donate_text">Лёгкий браузер для телевизора - бесплатный, без рекламы и без слежки. Таким и останется: развитие держится на тех, кому он пригодился. Наведите телефон на код или наберите адрес вручную.</string>
+
+    <!--
+        Экран «О браузере» (ADR-056). Здесь же живут версия и обновление: настройки -
+        это то, что человек меняет под себя, а версия и её проверка относятся к самому
+        браузеру. Имена в credits - не перевод, а имена людей.
+    -->
+    <string name="about_tagline">Лёгкий браузер для телевизора - бесплатный, без рекламы и без слежки. Таким и останется.</string>
+    <string name="about_author">Создатель</string>
+    <string name="about_tester">Тестировщик</string>
+    <string name="about_license">Лицензия</string>
+    <string name="update_checking">Проверяю…</string>
+    <string name="update_none">У вас последняя версия</string>
+    <string name="update_available">Есть версия %1$s</string>
+    <string name="update_check_failed">Не удалось проверить</string>
+    <string name="update_ready">Вышла версия %1$s</string>
+    <string name="update_now">Обновить</string>
+    <string name="update_later">Позже</string>
+    <string name="update_downloading">Скачиваю обновление…</string>
+    <string name="update_verifying">Проверяю подпись…</string>
+    <string name="update_installing">Открываю установщик…</string>
+    <string name="update_wrong_signature">Файл подписан не нами. Установка отменена</string>
+    <string name="update_broken">Скачанный файл повреждён. Попробуйте ещё раз</string>
+    <string name="update_foreign">В файле другое приложение. Установка отменена</string>
+    <string name="update_old">В файле не новая версия. Установка отменена</string>
+    <string name="limit_favorites">На домашней помещается шесть плиток. Уберите одну</string>
+    <string name="limit_bookmarks">Закладок уже 200 - это предел</string>
+    <string name="limit_pinned">Закреплённых уже 200 - это предел</string>
+    <string name="update_failed">Не получилось обновиться. Попробуйте позже</string>
+    <string name="scroll_hint">Листаю то, что под курсором. OK - выбрать, BACK - выйти</string>
+    <string name="fullscreen_host">%1$s показывает во весь экран. BACK - выйти</string>
+    <string name="fullscreen_host_unknown">Страница показывает во весь экран. BACK - выйти</string>
+    <string name="quiet_ssl">%1$s не открылся: недействительный сертификат</string>
+    <string name="ssl_not_a_setting">Проверка сертификата не отключается и от настроек не зависит: выключатель «Проверка опасных сайтов» - про список адресов, а не про сертификаты.</string>
+
+    <!-- Незащищённое соединение -->
+    <string name="http_title">Соединение не защищено</string>
+    <string name="http_message">Этот сайт передаёт данные открытым текстом. Всё, что вы на нём введёте или прочитаете, видно любому, кто имеет доступ к сети.</string>
+    <string name="http_action">Всё равно открыть</string>
+
+    <!-- Ошибки сертификата -->
+    <string name="err_ssl_title">Сертификат сайта недействителен</string>
+    <string name="ssl_expired">Срок действия сертификата истёк. Так выглядит и забытый администратором сайт, и попытка подмены.</string>
+    <string name="ssl_idmismatch">Сертификат выписан на другое имя. Возможно, соединение перехвачено.</string>
+    <string name="ssl_untrusted">Сертификат выдан неизвестным центром сертификации.</string>
+    <string name="ssl_notyetvalid">Срок действия сертификата ещё не начался. Проверьте дату и время на телевизоре.</string>
+    <string name="ssl_other">Проверка сертификата не пройдена.</string>
+
+    <!-- Сетевая ошибка -->
+    <string name="err_net_title">Не удалось открыть страницу</string>
+    <string name="err_net_message">Сайт не отвечает или отсутствует подключение к сети.</string>
+
+    <!-- Подтверждение http уже недействительно -->
+    <string name="err_stale_title">Подтверждение не принято</string>
+    <string name="err_stale_message">Подтверждение пришло не от той кнопки, которую показывал браузер. Похоже, страница пыталась разрешить переход за вас. Откройте нужный адрес заново.</string>
+
+    <!-- Адрес с userinfo: маскировка чужого сервера знакомым именем -->
+    <string name="err_spoof_title">Подозрительный адрес</string>
+    <string name="err_spoof_message">В адресе перед знаком @ стоит имя другого сайта - так маскируют переход на чужой сервер. Браузер такие ссылки не открывает. На самом деле ссылка ведёт сюда:</string>
+
+    <!-- Заблокированная схема -->
+    <string name="err_lan_title">Домашняя сеть закрыта</string>
+    <string name="err_lan_message">Этот адрес принадлежит устройству в вашей домашней сети, а доступ к ней выключен. Включить его можно в настройках телевизора, в разделе приложений - разрешение на локальную сеть.</string>
+    <string name="err_blocked_title">Переход заблокирован</string>
+    <string name="err_blocked_message">Ссылка ведёт не на веб-страницу, а в другое приложение. Браузер такие переходы не выполняет.</string>
+
+    <!-- Safe Browsing -->
+    <string name="err_threat_title">Опасный сайт</string>
+    <string name="err_threat_message">Google Safe Browsing отметил эту страницу как вредоносную. Она может красть пароли или устанавливать вредоносные программы.</string>
+
+    <!-- Падение процесса отрисовки -->
+    <string name="err_renderer_title">Страница закрыта</string>
+    <string name="err_renderer_crashed">Отрисовка страницы завершилась с ошибкой. Браузер продолжает работать.</string>
+    <string name="err_renderer_killed">Телевизору не хватило памяти, и система закрыла страницу. Браузер продолжает работать.</string>
+</resources>

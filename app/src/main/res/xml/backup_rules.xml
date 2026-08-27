@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Парная половина к data_extraction_rules.xml (требование D-3).
+
+    Осознанная избыточность. При allowBackup="false" платформа не читает
+    fullBackupContent вообще - бэкап отключён целиком, и читать правила исключения
+    не для чего. Файл существует по двум причинам: он снимает предупреждение lint
+    DataExtractionRules (у нас warningsAsErrors), и он делает намерение явным
+    для API 26-30, где dataExtractionRules ещё не действует.
+
+    Если allowBackup когда-нибудь переключат на true, эти правила придётся
+    пересмотреть заново, а не полагаться на них как на готовую защиту.
+-->
+<full-backup-content>
+    <exclude domain="root" path="." />
+    <exclude domain="file" path="." />
+    <exclude domain="database" path="." />
+    <exclude domain="sharedpref" path="." />
+    <exclude domain="external" path="." />
+</full-backup-content>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Фон клавиши «Ввод». Отличается от остальных только спокойным состоянием: нажатие
+     и выбор в режиме пульта обязаны выглядеть одинаково на всей клавиатуре, иначе
+     по отклику непонятно, попал ты по клавише или нет. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/key_pressed" />
+            <corners android:radius="6dp" />
+        </shape>
+    </item>
+    <item android:state_selected="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/key_selected" />
+            <corners android:radius="6dp" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/accent" />
+            <corners android:radius="6dp" />
+        </shape>
+    </item>
+</selector>

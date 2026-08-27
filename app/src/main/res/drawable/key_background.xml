@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Фон клавиши экранной клавиатуры. Три состояния, и все три нужны на телевизоре:
+     обычное - чтобы клавиша читалась как клавиша с трёх метров, выбранное - для режима
+     пульта, где по клавишам ходят стрелками, нажатое - отклик на попадание курсором. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/key_pressed" />
+            <corners android:radius="6dp" />
+        </shape>
+    </item>
+    <item android:state_selected="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/key_selected" />
+            <corners android:radius="6dp" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/key_face" />
+            <corners android:radius="6dp" />
+        </shape>
+    </item>
+</selector>
