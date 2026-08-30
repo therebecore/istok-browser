@@ -34,8 +34,8 @@ Istok открывает полные версии сайтов, а не уре�
 - **Полноэкранное видео** с плашкой, которая называет настоящий адрес плеера.
 - **Настройки под себя:** приватный режим, отключаемый JavaScript, выбор поисковика,
   мобильная или десктопная версия сайтов, русский и английский интерфейс.
-- **Обновления по воздуху.** Браузер сам находит новую версию на GitHub, проверяет
-  подпись APK и предлагает установку. Закладки и настройки остаются на месте.
+- **Обновления по воздуху.** Браузер сам находит новую версию, скачивает её и проверяет
+  подпись, а ставить или нет - решаете вы. Закладки и настройки остаются на месте.
 
 <table>
 <tr>
@@ -50,33 +50,53 @@ Istok открывает полные версии сайтов, а не уре�
 
 ## Установка
 
-Android 8.0 (API 26) и новее. Страницы рисует системный Android System WebView,
-поэтому весь браузер занимает 139 КБ и не замедляет телевизор. В Google Play его нет
-и не будет.
+Нужен Android 8.0 или новее. В Google Play браузера нет и не будет, поэтому ставится
+он файлом - это пять шагов, и все они делаются пультом.
 
 1. Скачайте `istok-<версия>.apk` со страницы
    [Releases](https://github.com/therebecore/istok-browser/releases).
-2. Разрешите установку из этого источника, когда телевизор спросит.
-3. Дальше браузер обновляет себя сам.
+2. Откройте скачанный файл на телевизоре.
+3. Телевизор спросит разрешение ставить приложения из этого источника - разрешите.
+4. Появится окно **"Приложение заблокировано для защиты устройства"**. В нём видно
+   только кнопку "ОК", но это не тупик: нажмите **"Подробнее"** - строку со стрелкой
+   под текстом.
+5. Окно раскроется, и внизу слева появится **"Все равно установить"**. Нажмите её.
 
-> **"Приложение заблокировано для защиты устройства".** Play Защита показывает это
-> предупреждение для любого APK мимо магазина: она проверяет не содержимое файла,
-> а знаком ли ей ключ подписи разработчика.
->
-> В окне видно только "ОК" - кнопки установки нет, и кажется, что выхода нет тоже.
-> Она появляется после раскрытия подробностей:
->
-> 1. Нажмите **"Подробнее"** - строка со стрелкой под текстом предупреждения.
-> 2. Окно раскроется, и внизу слева появится **"Все равно установить"**. Нажмите её.
->
-> **То же окно и те же два шага - при обновлении по воздуху.** К этому моменту браузер
-> уже скачал новую версию и сам сверил её подпись со своей, так что соглашайтесь спокойно.
->
-> Чтобы предупреждение не появлялось совсем, проверку можно выключить: Google Play,
-> меню профиля, "Play Защита", шестерёнка, "Сканировать приложения на угрозы".
+Готово, браузер установлен.
 
-SHA-256 каждого выпуска опубликован на его странице релиза, и браузер сверяет подпись
-скачанного файла с собственной перед тем, как отдать его установщику.
+## Обновления
+
+Браузер раз в сутки проверяет, вышла ли новая версия, и, если вышла, показывает полосу
+"Вышла версия ...". Сам он ничего не ставит - решаете вы.
+
+1. Нажмите **"Обновить"** в этой полосе. Браузер скачает новую версию и проверит, что
+   она подписана тем же ключом, что и установленная.
+2. Дальше запустится системный установщик, и Play Защита покажет **то же окно**, что
+   при первой установке. Шаги те же: **"Подробнее"**, затем **"Все равно установить"**.
+
+Закладки, избранное, история и настройки остаются на месте.
+
+Проверить обновление вручную можно в любой момент: меню (три точки справа сверху),
+"О браузере", "Проверить сейчас".
+
+### Если хотите, чтобы окно Play Защиты больше не появлялось
+
+Откройте Google Play, меню профиля, "Play Защита", шестерёнка настроек, и выключите
+"Сканировать приложения на угрозы". Это решение владельца телевизора: проверка
+перестанет предупреждать и о других приложениях тоже.
+
+Само предупреждение не означает, что с браузером что-то не так. Play Защита смотрит не
+на содержимое файла, а на то, знаком ли ей ключ подписи разработчика, и показывает это
+окно для любого приложения мимо магазина.
+
+### Для тех, кто проверяет файлы
+
+SHA-256 каждого выпуска опубликован на его странице релиза. Браузер и сам сверяет
+подпись скачанного обновления со своей перед тем, как отдать файл установщику: чужой
+или подменённый APK он не поставит.
+
+Страницы рисует системный Android System WebView, поэтому весь браузер занимает 139 КБ
+и не замедляет телевизор.
 
 ## Приватность
 
@@ -138,14 +158,19 @@ host; private mode, optional JavaScript, search engine choice and an English or 
 interface; over-the-air updates from GitHub with APK signature verification.
 
 **Install:** Android 8.0 (API 26) or newer. Download the APK from
-[Releases](https://github.com/therebecore/istok-browser/releases) and allow installation
-from that source. Play Protect warns about any sideloaded APK - it checks whether the
-signing key is known to it, not what the file contains. The dialog shows only "OK" at
-first: tap **"More details"** to expand it and the **"Install anyway"** button appears in
-the bottom left. The same dialog and the same two taps show up on over-the-air updates,
-after the browser has already verified the signature itself; turn the check off under
-Google Play, Play Protect, settings, if you would rather not see it again. Pages are rendered by the system Android
-System WebView. Google Play is deliberately out of scope.
+[Releases](https://github.com/therebecore/istok-browser/releases), open it on the TV and
+allow installs from that source. Play Protect then blocks the install: the dialog shows
+only "OK", so tap **"More details"** to expand it and **"Install anyway"** appears in the
+bottom left. That is not a verdict on the browser - Play Protect flags every APK whose
+signing key it has not seen before.
+
+**Updating:** the browser checks for a new version daily and offers it in a bar; you
+decide whether to install. It downloads the file and verifies the signature matches the
+installed build, then hands it to the system installer - where the same Play Protect
+dialog and the same two taps appear again. Bookmarks and settings survive. To check
+manually: menu, "About", "Check now". To silence the dialog for good, turn off app
+scanning under Google Play, Play Protect, settings. Pages are rendered by the system
+Android System WebView. Google Play is deliberately out of scope.
 
 **Privacy:** no analytics, no telemetry, no crash reporter, no ad SDK and no account.
 The project runs no server of its own. Details in [PRIVACY.md](PRIVACY.md), threat model
