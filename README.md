@@ -61,13 +61,19 @@ Android 8.0 (API 26) и новее. Страницы рисует системн
 
 > **"Приложение заблокировано для защиты устройства".** Play Защита показывает это
 > предупреждение для любого APK мимо магазина: она проверяет не содержимое файла,
-> а знаком ли ей ключ подписи разработчика. Нажмите "Подробнее", затем
-> "Всё равно установить". Если такой кнопки нет, поставьте через `adb install`.
+> а знаком ли ей ключ подписи разработчика.
 >
-> **То же окно появится и при обновлении** - браузер к этому моменту уже скачал новую
-> версию и проверил её подпись сам, так что нажимайте "Всё равно установить" спокойно.
-> Чтобы оно не появлялось совсем, проверку можно выключить: Google Play, меню профиля,
-> "Play Защита", шестерёнка, "Сканировать приложения на угрозы".
+> В окне видно только "ОК" - кнопки установки нет, и кажется, что выхода нет тоже.
+> Она появляется после раскрытия подробностей:
+>
+> 1. Нажмите **"Подробнее"** - строка со стрелкой под текстом предупреждения.
+> 2. Окно раскроется, и внизу слева появится **"Все равно установить"**. Нажмите её.
+>
+> **То же окно и те же два шага - при обновлении по воздуху.** К этому моменту браузер
+> уже скачал новую версию и сам сверил её подпись со своей, так что соглашайтесь спокойно.
+>
+> Чтобы предупреждение не появлялось совсем, проверку можно выключить: Google Play,
+> меню профиля, "Play Защита", шестерёнка, "Сканировать приложения на угрозы".
 
 SHA-256 каждого выпуска опубликован на его странице релиза, и браузер сверяет подпись
 скачанного файла с собственной перед тем, как отдать его установщику.
@@ -134,10 +140,11 @@ interface; over-the-air updates from GitHub with APK signature verification.
 **Install:** Android 8.0 (API 26) or newer. Download the APK from
 [Releases](https://github.com/therebecore/istok-browser/releases) and allow installation
 from that source. Play Protect warns about any sideloaded APK - it checks whether the
-signing key is known to it, not what the file contains: tap "More details", then
-"Install anyway". The same dialog shows up on over-the-air updates, after the browser has
-already verified the signature itself; turn the check off under Google Play, Play Protect,
-settings, if you would rather not see it again. Pages are rendered by the system Android
+signing key is known to it, not what the file contains. The dialog shows only "OK" at
+first: tap **"More details"** to expand it and the **"Install anyway"** button appears in
+the bottom left. The same dialog and the same two taps show up on over-the-air updates,
+after the browser has already verified the signature itself; turn the check off under
+Google Play, Play Protect, settings, if you would rather not see it again. Pages are rendered by the system Android
 System WebView. Google Play is deliberately out of scope.
 
 **Privacy:** no analytics, no telemetry, no crash reporter, no ad SDK and no account.
