@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Фон выпадающего меню. Отдельным shape, а не цветом: с 2026-08-29 крупные блоки
+     браузера скруглены на 12dp (см. HOME_STYLE в Pages.kt), и меню - последний блок
+     такого размера, который оставался прямоугольным. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/panel_background" />
+    <corners android:radius="12dp" />
+</shape>

@@ -225,7 +225,7 @@
             android:layout_gravity="top|end"
             android:layout_marginTop="@dimen/panel_height"
             android:layout_marginEnd="16dp"
-            android:background="@color/panel_background"
+            android:background="@drawable/menu_background"
             android:orientation="vertical"
             android:paddingTop="8dp"
             android:paddingBottom="8dp">

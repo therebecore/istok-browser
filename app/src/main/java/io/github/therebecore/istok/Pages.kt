@@ -213,11 +213,17 @@ private const val HOME_STYLE = """
   }
   .tiles { text-align: center; }
   .row { white-space: nowrap; margin-bottom: 2.4vh; }
+  /*
+    Скругления живут по двум числам и только по ним: 12px крупным блокам - плиткам,
+    полосе последнего сайта, строкам списков, - и 6px мелким: значкам, кнопкам правки,
+    корзине. Шесть выбраны не на глаз, а по клавиатуре и кнопкам диалогов: они стоят
+    на 6dp с Этапа 5, и до 2026-08-29 страницы с их 2px выглядели рядом чужими.
+  */
   .tile {
     display: inline-block; vertical-align: top;
     width: var(--tw); height: calc(var(--tw) / 2);
     margin: 0 1.2vw;
-    background: #171E24; border: 1px solid #2A353E; border-radius: 2px;
+    background: #171E24; border: 1px solid #2A353E; border-radius: 12px;
     text-decoration: none; color: #E8EEF2;
     box-sizing: border-box; padding-top: 3.4vh;
     text-align: center; overflow: hidden;
@@ -227,7 +233,7 @@ private const val HOME_STYLE = """
   .solo { --tw: 34vw; }
   .mark {
     display: block; width: 8vh; height: 8vh; line-height: 8vh;
-    margin: 0 auto 1.6vh; border-radius: 2px;
+    margin: 0 auto 1.6vh; border-radius: 6px;
     font-size: 4.6vh; font-weight: 700; color: #0E1216;
   }
   .name {
@@ -259,7 +265,7 @@ private const val HOME_STYLE = """
   .tool {
     display: inline-flex; align-items: center; justify-content: center;
     width: 6.4vh; height: 6.4vh; vertical-align: middle;
-    margin: 0 0.5vw; border: 1px solid #2A353E; border-radius: 2px;
+    margin: 0 0.5vw; border: 1px solid #2A353E; border-radius: 6px;
     background: #0E1216; color: #9FB0BC; font-size: 3.4vh; text-decoration: none;
   }
   .tool svg { width: 3.4vh; height: 3.4vh; }
@@ -268,7 +274,7 @@ private const val HOME_STYLE = """
   .edit { border-color: #3D4C57; }
   .editbtn {
     display: inline-block; margin-top: 1.6vh; padding: 1vh 2.4vw;
-    border: 1px solid #2A353E; border-radius: 2px;
+    border: 1px solid #2A353E; border-radius: 6px;
     color: #7D8F9B; font-size: 2.9vh; text-decoration: none;
   }
   .editbtn:hover { border-color: #6BA6F0; color: #E8EEF2; background: #2C4A73; }
@@ -277,7 +283,7 @@ private const val HOME_STYLE = """
   .last { width: 88%; margin-top: 2vh; border-top: 1px solid #2A353E; padding-top: 2.4vh; }
   .strip {
     display: block; height: 13vh; box-sizing: border-box;
-    background: #171E24; border: 1px solid #2A353E; border-radius: 2px;
+    background: #171E24; border: 1px solid #2A353E; border-radius: 12px;
     padding: 0 2.6vw; text-decoration: none; color: #E8EEF2;
     white-space: nowrap; overflow: hidden;
   }
@@ -330,7 +336,7 @@ private const val LIST_STYLE = """
   .trash {
     display: flex; align-items: center; justify-content: center;
     width: 9vh; height: 9vh; flex: none;
-    border: 1px solid #2A353E; border-radius: 2px;
+    border: 1px solid #2A353E; border-radius: 6px;
     color: #7D8F9B; text-decoration: none;
   }
   .trash svg { width: 4.4vh; height: 4.4vh; }
@@ -338,7 +344,7 @@ private const val LIST_STYLE = """
   .empty { font-size: 3.4vh; color: #7D8F9B; }
   .row {
     display: block; height: 11vh; box-sizing: border-box; margin-bottom: 1.4vh;
-    background: #171E24; border: 1px solid #2A353E; border-radius: 2px;
+    background: #171E24; border: 1px solid #2A353E; border-radius: 12px;
     padding: 0 2.2vw; text-decoration: none; color: #E8EEF2;
     white-space: nowrap; overflow: hidden;
   }
@@ -354,7 +360,7 @@ private const val LIST_STYLE = """
   .act {
     display: flex; align-items: center; justify-content: center;
     width: 11vh; margin-left: 1.2vh; box-sizing: border-box;
-    background: #171E24; border: 1px solid #2A353E; border-radius: 2px;
+    background: #171E24; border: 1px solid #2A353E; border-radius: 6px;
     color: #7D8F9B; font-size: 4.4vh; text-decoration: none;
   }
   .act svg { width: 4.4vh; height: 4.4vh; }
@@ -398,7 +404,7 @@ private const val LIST_STYLE = """
   .tab:hover { color: #E8EEF2; background: #2C4A73; }
   .mark {
     display: inline-block; width: 5.6vh; height: 5.6vh; line-height: 5.6vh;
-    margin: 2.7vh 1.6vw 0 0; vertical-align: top; border-radius: 2px;
+    margin: 2.7vh 1.6vw 0 0; vertical-align: top; border-radius: 6px;
     font-size: 3.2vh; font-weight: 700; color: #0E1216; text-align: center;
   }
   .txt { display: inline-block; vertical-align: top; margin-top: 2vh; max-width: 82%; overflow: hidden; }
