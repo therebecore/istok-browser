@@ -50,8 +50,8 @@ Istok открывает полные версии сайтов, а не уре�
 
 ## Установка
 
-Нужен Android 8.0 или новее. В Google Play браузера нет и не будет, поэтому ставится
-он файлом - это пять шагов, и все они делаются пультом.
+Нужен Android 8.0 или новее. Браузер ставится файлом - это пять шагов, и все они
+делаются пультом.
 
 1. Скачайте `istok-<версия>.apk` со страницы
    [Releases](https://github.com/therebecore/istok-browser/releases).
@@ -170,7 +170,7 @@ installed build, then hands it to the system installer - where the same Play Pro
 dialog and the same two taps appear again. Bookmarks and settings survive. To check
 manually: menu, "About", "Check now". To silence the dialog for good, turn off app
 scanning under Google Play, Play Protect, settings. Pages are rendered by the system
-Android System WebView. Google Play is deliberately out of scope.
+Android System WebView.
 
 **Privacy:** no analytics, no telemetry, no crash reporter, no ad SDK and no account.
 The project runs no server of its own. Details in [PRIVACY.md](PRIVACY.md), threat model
